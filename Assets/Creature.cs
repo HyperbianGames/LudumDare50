@@ -7,8 +7,8 @@ public class Creature : MonoBehaviour
     public GameObject HealthBar;
     public float CurrentHealth = 100;
     public float MaxHealth = 100;
-    
 
+    public float CurrentGCD = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +30,13 @@ public class Creature : MonoBehaviour
         
         if (HealthBar != null)
         {
-            HealthBar.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 2-(GetHealthPercentage() * 2), GetHealthPercentage() * 2);
+            HealthBar.GetComponent<ProgressBarController>().CurrentValue = GetHealthPercentage() * 100;
         }
+    }
+
+    public void CastSpell(Spell spell)
+    {
+        CombatManager.Instance.CastSpell(this, spell);
     }
 
     private float GetHealthPercentage()
