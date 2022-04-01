@@ -10,6 +10,8 @@ public class Creature : MonoBehaviour
 
     public float CurrentGCD = 0;
 
+    public Dictionary<Spell, float> Cooldowns { get; set; } = new Dictionary<Spell, float>();
+
     // Start is called before the first frame update
     void Start()
     {

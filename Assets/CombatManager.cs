@@ -7,11 +7,20 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance { get; set; }
     public const float GCDLength = 1.5f;
-    public List<Creature> Creatures { get; set; }
+    public List<Creature> Creatures { get; set; } = new List<Creature>();
 
     private void Start()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        foreach (Creature creature in Creatures)
+        {
+            if (creature.CurrentGCD > 0)
+                creature.CurrentGCD -= Time.deltaTime;
+        }
     }
 
     internal void CastSpell(Creature creature, Spell spell)
