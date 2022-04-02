@@ -30,6 +30,8 @@ public class PlayerMovementAndCamera : MonoBehaviour
     private CinemachineFreeLook cmFreeLook;
     private CharacterController controller;
     private Vector3 playerVelocity;
+    private Quaternion playerFacing;
+    private Vector3 playerFacingForward;
     private bool groundedPlayer;
     private Transform cameraMainTransform;
 
@@ -50,14 +52,18 @@ public class PlayerMovementAndCamera : MonoBehaviour
     {
         controller = gameObject.GetComponent<CharacterController>();
         cameraMainTransform = Camera.main.transform;
-
     }
 
     void Update()
     {
-        cmFreeLook = cmFreeLookCamera.GetComponent<CinemachineFreeLook>();
+        if (cmFreeLook == null)
+        {
+            cmFreeLook = cmFreeLookCamera.GetComponent<CinemachineFreeLook>();
+        }
 
         CheckForCameraMovement();
+
+        playerFacingForward = controller.transform.forward;
 
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
@@ -68,17 +74,35 @@ public class PlayerMovementAndCamera : MonoBehaviour
         Vector2 movement = movementControl.action.ReadValue<Vector2>();
         Vector3 move = new Vector3(movement.x, 0, movement.y);
 
-        if(Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
-        {
-            move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
-        }
+        // print($"output1: {move.x}, {move.z}, -- {controller.transform.forward.x}, {controller.transform.forward.z}");
+        // print($"{controller.transform.localRotation.ToString()} -- {controller.transform.rotation.ToString()}");
 
         move.y = 0f;
-        controller.Move(move * Time.deltaTime * playerSpeed);
 
+        // Movement
+        if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+        {
+            move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
+            controller.Move(move * Time.deltaTime * playerSpeed);
+        }
+        else
+        {
+            print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
+            move = controller.transform.forward * move.z + controller.transform.right * move.x;
+            controller.Move(move * Time.deltaTime * playerSpeed);
+        }
+
+        // Facing
         if (move != Vector3.zero)
         {
-            gameObject.transform.forward = move;
+            if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+            {
+                gameObject.transform.forward = move;
+            }
+            else
+            {
+
+            }
         }
 
         // Changes the height position of the player..
@@ -90,24 +114,22 @@ public class PlayerMovementAndCamera : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
 
-        if(movement != Vector2.zero)
-        {
-            float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg + cameraMainTransform.eulerAngles.y;
-            Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
-        }
+        //if(movement != Vector2.zero)
+        //{
+        //    float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg + cameraMainTransform.eulerAngles.y;
+        //    Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
+        //    transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        //}
     }
 
     private void CheckForCameraMovement()
     {
         if (Mathf.Approximately(leftClick.action.ReadValue<float>(), 1) || Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
         {
-            print("I Triggered");
             cmFreeLook.m_XAxis.m_MaxSpeed = 150;
         }
         else
         {
-            print("untriggered");
             cmFreeLook.m_XAxis.m_MaxSpeed = 0;
         }
     }
