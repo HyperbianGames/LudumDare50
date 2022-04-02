@@ -1,11 +1,17 @@
+using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerControllerNew : MonoBehaviour
+public class PlayerMovementAndCamera : MonoBehaviour
 {
+    [SerializeField]
+    private InputActionReference leftClick;
+    [SerializeField]
+    private InputActionReference rightClick;
     [SerializeField]
     private InputActionReference movementControl;
     [SerializeField]
@@ -19,6 +25,9 @@ public class PlayerControllerNew : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 4f;
 
+    public GameObject cmFreeLookCamera;
+
+    private CinemachineFreeLook cmFreeLook;
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -26,6 +35,7 @@ public class PlayerControllerNew : MonoBehaviour
 
     private void OnEnable()
     {
+        rightClick.action.Enable();
         movementControl.action.Enable();
         jumpControl.action.Enable();
     }
@@ -40,10 +50,15 @@ public class PlayerControllerNew : MonoBehaviour
     {
         controller = gameObject.GetComponent<CharacterController>();
         cameraMainTransform = Camera.main.transform;
+
     }
 
     void Update()
     {
+        cmFreeLook = cmFreeLookCamera.GetComponent<CinemachineFreeLook>();
+
+        CheckForCameraMovement();
+
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -52,7 +67,12 @@ public class PlayerControllerNew : MonoBehaviour
 
         Vector2 movement = movementControl.action.ReadValue<Vector2>();
         Vector3 move = new Vector3(movement.x, 0, movement.y);
-        move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
+
+        if(Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+        {
+            move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
+        }
+
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
 
@@ -75,6 +95,20 @@ public class PlayerControllerNew : MonoBehaviour
             float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg + cameraMainTransform.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        }
+    }
+
+    private void CheckForCameraMovement()
+    {
+        if (Mathf.Approximately(leftClick.action.ReadValue<float>(), 1) || Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+        {
+            print("I Triggered");
+            cmFreeLook.m_XAxis.m_MaxSpeed = 150;
+        }
+        else
+        {
+            print("untriggered");
+            cmFreeLook.m_XAxis.m_MaxSpeed = 0;
         }
     }
 }
