@@ -8,6 +8,8 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance { get; set; }
     public const float GCDLength = 1.5f;
     public List<Creature> Creatures { get; set; } = new List<Creature>();
+    public List<Creature> VisibleCreatures { get; set; } = new List<Creature>();
+    public GameObject Camera;
 
     private void Start()
     {
@@ -34,6 +36,20 @@ public class CombatManager : MonoBehaviour
             
             spell.CastStart();
             spell.CastEnd();
+        }
+    }
+
+    internal static void SetVisibleCreature(Creature creature, bool v)
+    {
+        if (v)
+        {
+            Instance.VisibleCreatures.Add(creature);
+            Debug.Log("creature added");
+        }
+        else if (Instance.VisibleCreatures.Contains(creature))
+        {
+            Instance.VisibleCreatures.Remove(creature);
+            Debug.Log("creature removed");
         }
     }
 }

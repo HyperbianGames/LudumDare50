@@ -11,8 +11,9 @@ public class ProgressBarController : MonoBehaviour
     void Update()
     {
         RectTransform rt = gameObject.transform.GetComponent<RectTransform>();
-        float width = rt.sizeDelta.x * rt.localScale.x;
-        float height = rt.sizeDelta.y * rt.localScale.y;
+        //float width = rt.sizeDelta.x * rt.localScale.x;
+        float width = rt.rect.width;
+        //float height = rt.sizeDelta.y * rt.localScale.y;
 
 
         if (CurrentValue < 0)
