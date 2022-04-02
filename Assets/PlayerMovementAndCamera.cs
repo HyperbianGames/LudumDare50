@@ -102,12 +102,10 @@ public class PlayerMovementAndCamera : MonoBehaviour
     {
         if (Mathf.Approximately(leftClick.action.ReadValue<float>(), 1) || Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
         {
-            print("I Triggered");
             cmFreeLook.m_XAxis.m_MaxSpeed = 150;
         }
         else
         {
-            print("untriggered");
             cmFreeLook.m_XAxis.m_MaxSpeed = 0;
         }
     }

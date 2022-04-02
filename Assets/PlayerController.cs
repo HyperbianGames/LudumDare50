@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -17,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public GameObject ActionSixButton;
     public GameObject ActionSevenButton;
     public GameObject TabCollider;
+    public GameObject Weapon;
 
     [SerializeField]
     private InputActionReference EscAction;
@@ -33,10 +31,14 @@ public class PlayerController : MonoBehaviour
     private int CurrentTargetIndex = 0;
 
     private Dictionary<InputAction, bool> previousState = new Dictionary<InputAction, bool>();
+    private Dictionary<string, Spell> Spells = new Dictionary<string, Spell>();
 
     // Start is called before the first frame update
     void Start()
     {
+        Spells.Add("ActionOne", new ActionOne());
+        Spells["ActionOne"].CastEndCallback = () => { Weapon.GetComponent<JankAnimationController>().ExecuteAbilityAnimation("ActionOne"); };
+
         Creature.IsPlayer = true;
 
         actionOne = new InputAction("ActionOne", binding: CommonUsages.PrimaryAction);
@@ -192,7 +194,7 @@ public class PlayerController : MonoBehaviour
     public void ActionOne()
     {
         print("ActionOne");
-        Creature.CastSpell(new ActionOne());
+        Creature.CastSpell(Spells["ActionOne"]);
     }
 
     public void ActionTwo()

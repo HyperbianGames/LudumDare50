@@ -29,9 +29,11 @@ public class JankAnimator : MonoBehaviour
 
     private Vector3 NextFrameLocation;
     private Quaternion NextFrameRotation;
-    
+
 
     private bool lastFrame = false;
+    private bool executeCallaback = false;
+    private Action callbackMethod;
 
     // Update is called once per frame
     void Update()
@@ -57,8 +59,8 @@ public class JankAnimator : MonoBehaviour
     {
         if (Time.time < frameEndTime)
         {
-            ObjectToJanklyAnimate.transform.position = Vector3.Lerp(NextFrameLocation, CurrentFrameLocation, GetPercentThroughAnim());
-            ObjectToJanklyAnimate.transform.rotation = Quaternion.Lerp(NextFrameRotation, CurrentFrameRotation, GetPercentThroughAnim());
+            ObjectToJanklyAnimate.transform.localPosition = Vector3.Lerp(NextFrameLocation, CurrentFrameLocation, GetPercentThroughAnim());
+            ObjectToJanklyAnimate.transform.localRotation = Quaternion.Lerp(NextFrameRotation, CurrentFrameRotation, GetPercentThroughAnim());
         }
         else
         {
@@ -73,8 +75,11 @@ public class JankAnimator : MonoBehaviour
             lastFrame = false;
             currentlyAnimation = false;
 
-            ObjectToJanklyAnimate.transform.position = OriginalLocation;
-            ObjectToJanklyAnimate.transform.rotation = OriginalRotation;
+            ObjectToJanklyAnimate.transform.localPosition = OriginalLocation;
+            ObjectToJanklyAnimate.transform.localRotation = OriginalRotation;
+
+            if (executeCallaback)
+                callbackMethod();
         }
         else
         {
@@ -84,16 +89,16 @@ public class JankAnimator : MonoBehaviour
             {
                 currentJankFrameIndex++;
                 frameEndTime = frameStartTime + KeyFrames[currentJankFrameIndex].lerpTime;
-                CurrentFrameLocation = KeyFrames[currentJankFrameIndex-1].nextLoc.transform.position;
-                CurrentFrameRotation = KeyFrames[currentJankFrameIndex-1].nextLoc.transform.rotation;
-                NextFrameLocation = KeyFrames[currentJankFrameIndex].nextLoc.transform.position;
-                NextFrameRotation = KeyFrames[currentJankFrameIndex].nextLoc.transform.rotation;
+                CurrentFrameLocation = KeyFrames[currentJankFrameIndex - 1].nextLoc.transform.localPosition;
+                CurrentFrameRotation = KeyFrames[currentJankFrameIndex - 1].nextLoc.transform.localRotation;
+                NextFrameLocation = KeyFrames[currentJankFrameIndex].nextLoc.transform.localPosition;
+                NextFrameRotation = KeyFrames[currentJankFrameIndex].nextLoc.transform.localRotation;
             }
             else
             {
                 lastFrame = true;
-                CurrentFrameLocation = KeyFrames[KeyFrames.Length - 1].nextLoc.transform.position;
-                CurrentFrameRotation = KeyFrames[KeyFrames.Length - 1].nextLoc.transform.rotation;
+                CurrentFrameLocation = KeyFrames[KeyFrames.Length - 1].nextLoc.transform.localPosition;
+                CurrentFrameRotation = KeyFrames[KeyFrames.Length - 1].nextLoc.transform.localRotation;
                 NextFrameLocation = OriginalLocation;
                 NextFrameRotation = OriginalRotation;
                 frameEndTime = frameStartTime + KeyFrames[KeyFrames.Length - 1].lerpTime;
@@ -107,12 +112,28 @@ public class JankAnimator : MonoBehaviour
         currentJankFrameIndex = 0;
         frameStartTime = Time.time;
         frameEndTime = frameStartTime + KeyFrames[currentJankFrameIndex].lerpTime;
+        executeCallaback = false;
 
-        OriginalLocation = ObjectToJanklyAnimate.transform.position;
+        OriginalLocation = ObjectToJanklyAnimate.transform.localPosition;
         OriginalRotation = ObjectToJanklyAnimate.transform.rotation;
         CurrentFrameLocation = OriginalLocation;
         CurrentFrameRotation = OriginalRotation;
-        NextFrameLocation = KeyFrames[currentJankFrameIndex].nextLoc.transform.position;
-        NextFrameRotation = KeyFrames[currentJankFrameIndex].nextLoc.transform.rotation;
+        NextFrameLocation = KeyFrames[currentJankFrameIndex].nextLoc.transform.localPosition;
+        NextFrameRotation = KeyFrames[currentJankFrameIndex].nextLoc.transform.localRotation;
+    }
+
+    public void StartJankAnimation(Action endAnimationCallback)
+    {
+        callbackMethod = endAnimationCallback;
+        StartJankAnimation();
+        executeCallaback = true;
+    }
+
+    public void CancelAnimation()
+    {
+        lastFrame = false;
+        currentlyAnimation = false;
+        ObjectToJanklyAnimate.transform.localPosition = OriginalLocation;
+        ObjectToJanklyAnimate.transform.localRotation = OriginalRotation;
     }
 }
