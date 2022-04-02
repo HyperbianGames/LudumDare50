@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private InputActionReference MousePos;
 
     public Creature Creature;
+    public GameObject UIObject;
 
     private int CurrentTargetIndex = 0;
 
@@ -173,12 +174,19 @@ public class PlayerController : MonoBehaviour
 
     private void EscPress()
     {
-        CurrentTargetIndex = 0;
-        Creature.CurrentTarget = null;
-
-        foreach (Creature creature in CombatManager.Instance.Creatures)
+        if (Creature.CurrentTarget != null)
         {
-            creature.SetAsPlayerTarget(false);
+            CurrentTargetIndex = 0;
+            Creature.CurrentTarget = null;
+
+            foreach (Creature creature in CombatManager.Instance.Creatures)
+            {
+                creature.SetAsPlayerTarget(false);
+            }
+        }
+        else
+        {
+            UIObject.GetComponent<GameMenuController>().ToggleMenu();
         }
     }
 
