@@ -26,19 +26,14 @@ public class PlayerController : MonoBehaviour
     private InputActionReference MousePos;
 
     public Creature Creature;
-    public Creature CurrentTargetg;
 
     private int CurrentTargetIndex = 0;
 
     private Dictionary<InputAction, bool> previousState = new Dictionary<InputAction, bool>();
-    private Dictionary<string, Spell> Spells = new Dictionary<string, Spell>();
 
     // Start is called before the first frame update
     void Start()
     {
-        Spells.Add("ActionOne", new ActionOne());
-        Spells["ActionOne"].CastEndCallback = () => { Weapon.GetComponent<JankAnimationController>().ExecuteAbilityAnimation("ActionOne"); };
-
         Creature.IsPlayer = true;
 
         actionOne = new InputAction("ActionOne", binding: CommonUsages.PrimaryAction);
@@ -150,15 +145,27 @@ public class PlayerController : MonoBehaviour
         {
             if (hit.collider != null && hit.collider.transform != this.transform)
             {
-                Creature creatureFound = hit.transform.gameObject.GetComponent<Creature>();
+                MainObjectMarshmellow marshmellow = hit.transform.gameObject.GetComponent<MainObjectMarshmellow>();
+
+                Creature creatureFound;
+                if (marshmellow != null)
+                {
+                    creatureFound = marshmellow.Parent.GetComponent<Creature>();
+                }
+                else
+                {
+                    creatureFound = hit.transform.gameObject.GetComponent<Creature>();
+                }
+                 
                 if (creatureFound != null && !creatureFound.IsPlayer)
                 {
                     foreach (Creature creature in CombatManager.Instance.Creatures)
                     {
-                        creature.SetAsTarget(false);
+                        creature.SetAsPlayerTarget(false);
                     }
 
-                    creatureFound.SetAsTarget(true);
+                    creatureFound.SetAsPlayerTarget(true);
+                    Creature.CurrentTarget = creatureFound;
                 }
             }
         }
@@ -167,11 +174,11 @@ public class PlayerController : MonoBehaviour
     private void EscPress()
     {
         CurrentTargetIndex = 0;
-
+        Creature.CurrentTarget = null;
 
         foreach (Creature creature in CombatManager.Instance.Creatures)
         {
-            creature.SetAsTarget(false);
+            creature.SetAsPlayerTarget(false);
         }
     }
 
@@ -193,13 +200,16 @@ public class PlayerController : MonoBehaviour
 
     public void ActionOne()
     {
-        print("ActionOne");
-        Creature.CastSpell(Spells["ActionOne"]);
+        Spell spell = new ActionOne();
+        spell.CastEndCallback = () => { Weapon.GetComponent<JankAnimationController>().ExecuteAbilityAnimation("ActionOne"); };
+        Creature.CastSpell(spell);
     }
 
     public void ActionTwo()
     {
-        print("ActionTwo");
+        Spell spell = new ActionTwo();
+        spell.CastEndCallback = () => { Weapon.GetComponent<JankAnimationController>().ExecuteAbilityAnimation("ActionTwo"); };
+        Creature.CastSpell(spell);
     }
 
     public void ActionThree()
@@ -231,7 +241,7 @@ public class PlayerController : MonoBehaviour
     {
         foreach (Creature creature in CombatManager.Instance.Creatures)
         {
-            creature.SetAsTarget(false);
+            creature.SetAsPlayerTarget(false);
         }
 
         if (CurrentTargetIndex > CombatManager.Instance.VisibleCreatures.Count - 1)
@@ -239,9 +249,9 @@ public class PlayerController : MonoBehaviour
 
         if (CombatManager.Instance.VisibleCreatures.Count > 0)
         {
-            CurrentTargetg = CombatManager.Instance.VisibleCreatures[CurrentTargetIndex];
+            Creature.CurrentTarget = CombatManager.Instance.VisibleCreatures[CurrentTargetIndex];
+            Creature.CurrentTarget.SetAsPlayerTarget(true);
             CurrentTargetIndex++;
-            CurrentTargetg.SetAsTarget(true);
         }
     }
 }

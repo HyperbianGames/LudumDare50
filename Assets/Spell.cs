@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public enum SpellType
 {
@@ -14,20 +11,13 @@ public abstract class Spell
     public Action CastStartCallback { get; set; }
 
     public SpellType SpellType { get; set; }
-    public abstract void CastEnd();
-    public abstract void CastStart();
+    public abstract void CastSuccess(Creature castingCreature);
+    public abstract void CastStart(Creature castingCreature);
+
+    public abstract bool ValidCast(Creature castingCreature);
 }
 
-public class ActionOne : Spell
-{
-    public override void CastEnd()
-    {
-    }
 
-    public override void CastStart()
-    {
-    }
-}
 
 
 
