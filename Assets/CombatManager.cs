@@ -35,7 +35,9 @@ public class CombatManager : MonoBehaviour
                 creature.CurrentGCD += GCDLength;
             
             spell.CastStart();
+            spell.CastStartCallback?.Invoke();
             spell.CastEnd();
+            spell.CastEndCallback?.Invoke();
         }
     }
 
@@ -44,12 +46,10 @@ public class CombatManager : MonoBehaviour
         if (v)
         {
             Instance.VisibleCreatures.Add(creature);
-            Debug.Log("creature added");
         }
         else if (Instance.VisibleCreatures.Contains(creature))
         {
             Instance.VisibleCreatures.Remove(creature);
-            Debug.Log("creature removed");
         }
     }
 }
