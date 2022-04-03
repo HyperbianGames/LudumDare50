@@ -17,6 +17,8 @@ public class Creature : MonoBehaviour
 
     public Dictionary<Spell, float> Cooldowns { get; set; } = new Dictionary<Spell, float>();
     public bool IsPlayer { get; set; } = false;
+    public bool IsKillable = true;
+    public bool IsBoss = false;
     public Creature CurrentTarget { get; set; } = null;
 
     public NavMeshAgent agent;
@@ -31,7 +33,7 @@ public class Creature : MonoBehaviour
 
     private void OnDestroy()
     {
-        CombatManager.Instance.Creatures.Remove(this);
+        CombatManager.Instance.CreatureDestroyed(this);
     }
 
     // Update is called once per frame
@@ -70,7 +72,14 @@ public class Creature : MonoBehaviour
         }
         else
         {
-            CurrentHealth = MaxHealth;
+            if (IsKillable)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                CurrentHealth = MaxHealth;
+            }
         }
         
         if (HealthBar != null)
