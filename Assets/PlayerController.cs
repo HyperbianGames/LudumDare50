@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private InputActionReference MousePos;
 
+    [SerializeField]
+    private InputActionReference WierdOne;
+
     public Creature Creature;
     public GameObject UIObject;
 
@@ -72,6 +75,7 @@ public class PlayerController : MonoBehaviour
         EscAction.action.Enable();
         LeftClick.action.Enable();
         MousePos.action.Enable();
+        WierdOne.action.Enable();
 
     }
 

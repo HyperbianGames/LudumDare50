@@ -38,12 +38,14 @@ public class GameMenuController : MonoBehaviour
 
     public void ShowWinScreen()
     {
-        WinScreen.SetActive(true);
+        if (WinScreen != null)
+            WinScreen.SetActive(true);
     }
 
     public void ShowLoseScreen()
     {
-        LoseScreen.SetActive(true);
+        if (LoseScreen != null)
+            LoseScreen.SetActive(true);
     }
 
     internal void ShowMenu()
