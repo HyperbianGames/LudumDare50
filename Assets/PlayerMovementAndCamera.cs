@@ -137,7 +137,7 @@ public class PlayerMovementAndCamera : MonoBehaviour
     {
         if (Mathf.Approximately(leftClick.action.ReadValue<float>(), 1) || Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
         {
-            cmFreeLook.m_XAxis.m_MaxSpeed = 150;
+            cmFreeLook.m_XAxis.m_MaxSpeed = 0.20f;
         }
         else
         {
