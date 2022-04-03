@@ -15,8 +15,16 @@ public class Creature : MonoBehaviour
 
     public float CurrentGCD = 0;
 
+    public EnemyActionSequencer EAS = null;
+
     public Dictionary<Spell, float> Cooldowns { get; set; } = new Dictionary<Spell, float>();
     public bool IsPlayer = false;
+
+    public bool CanAct()
+    {
+        return CurrentGCD <= 0 && CurrentTarget != null;
+    }
+
     public bool IsKillable = true;
     public bool IsBoss = false;
     public Creature CurrentTarget { get; set; } = null;
@@ -77,6 +85,11 @@ public class Creature : MonoBehaviour
             if (IsKillable)
             {
                 Destroy(gameObject);
+
+                if (IsPlayer)
+                {
+                    GameMenuController.Instance.ShowLoseScreen();
+                }
             }
             else
             {

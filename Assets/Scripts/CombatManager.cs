@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -76,7 +75,6 @@ public class CombatManager : MonoBehaviour
         Creatures.Remove(creature);
         if (creature.IsBoss)
         {
-            Time.timeScale = 0;
             gameOver = true;
             GameOverTime = Time.realtimeSinceStartup;
             GameMenuController.Instance.ShowWinScreen();
