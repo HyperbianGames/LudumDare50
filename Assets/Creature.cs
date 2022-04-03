@@ -16,7 +16,7 @@ public class Creature : MonoBehaviour
     public float CurrentGCD = 0;
 
     public Dictionary<Spell, float> Cooldowns { get; set; } = new Dictionary<Spell, float>();
-    public bool IsPlayer { get; set; } = false;
+    public bool IsPlayer = false;
     public bool IsKillable = true;
     public bool IsBoss = false;
     public Creature CurrentTarget { get; set; } = null;
@@ -28,12 +28,14 @@ public class Creature : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CombatManager.Instance.Creatures.Add(this);
+        if (!IsPlayer)
+            CombatManager.Instance.Creatures.Add(this);
     }
 
     private void OnDestroy()
     {
-        CombatManager.Instance.CreatureDestroyed(this);
+        if (!IsPlayer)
+            CombatManager.Instance.CreatureDestroyed(this);
     }
 
     // Update is called once per frame
