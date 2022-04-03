@@ -21,7 +21,7 @@ public class PlayerMovementAndCamera : MonoBehaviour
     [SerializeField]
     private float jumpHeight = 1.0f;
     [SerializeField]
-    private float gravityValue = -9.81f;
+    private float gravityValue;
     [SerializeField]
     private float rotationSpeed = 4f;
 
@@ -30,12 +30,12 @@ public class PlayerMovementAndCamera : MonoBehaviour
     private CinemachineFreeLook cmFreeLook;
     private CharacterController controller;
     private Vector3 playerVelocity;
-    private Quaternion playerFacing;
-    private Vector3 playerFacingForward;
     private bool groundedPlayer;
     private Transform cameraMainTransform;
     private Vector2 movement;
     private Vector2 airMovement;
+    private Vector3 airFacingForward;
+    private Vector3 airFacingRight;
     private Vector3 move;
 
     private void OnEnable()
@@ -66,7 +66,6 @@ public class PlayerMovementAndCamera : MonoBehaviour
 
         CheckForCameraMovement();
 
-        playerFacingForward = controller.transform.forward;
         groundedPlayer = controller.isGrounded;
 
         if (groundedPlayer && playerVelocity.y < 0)
@@ -85,7 +84,12 @@ public class PlayerMovementAndCamera : MonoBehaviour
         }
 
         move.y = 0f;
-        move = controller.transform.forward * move.z + controller.transform.right * move.x;
+
+        // Use Air facing if you are airborne to preserve momentum
+        if (groundedPlayer)
+            move = controller.transform.forward * move.z + controller.transform.right * move.x;
+        else
+            move = airFacingForward * move.z + airFacingRight * move.x;
 
         controller.Move(move * Time.deltaTime * playerSpeed);
 
@@ -99,7 +103,11 @@ public class PlayerMovementAndCamera : MonoBehaviour
         if (jumpControl.action.triggered && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            
+            //Preserve air movement and facing to preserve momentum
             airMovement = movement;
+            airFacingForward = controller.transform.forward;
+            airFacingRight = controller.transform.right;
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
