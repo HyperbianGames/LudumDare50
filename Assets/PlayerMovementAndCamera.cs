@@ -82,27 +82,38 @@ public class PlayerMovementAndCamera : MonoBehaviour
         // Movement
         if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
         {
-            move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
-            controller.Move(move * Time.deltaTime * playerSpeed);
+            //move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
+            //controller.Move(move * Time.deltaTime * playerSpeed);
+
+            //print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
+            //move = controller.transform.forward * move.z + controller.transform.right * move.x;
+            //controller.Move(move * Time.deltaTime * playerSpeed);
         }
         else
         {
-            print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
-            move = controller.transform.forward * move.z + controller.transform.right * move.x;
-            controller.Move(move * Time.deltaTime * playerSpeed);
+            //print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
+            //move = controller.transform.forward * move.z + controller.transform.right * move.x;
+            //controller.Move(move * Time.deltaTime * playerSpeed);
         }
 
-        // Facing
-        if (move != Vector3.zero)
-        {
-            if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
-            {
-                gameObject.transform.forward = move;
-            }
-            else
-            {
+        print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
+        move = controller.transform.forward * move.z + controller.transform.right * move.x;
+        controller.Move(move * Time.deltaTime * playerSpeed);
 
-            }
+        //// Facing
+        //if (move != Vector3.zero)
+        //{
+            
+        //    else
+        //    {
+
+        //    }
+        //}
+
+        if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+        {
+            Vector3 rotation = cameraMainTransform.forward;
+            gameObject.transform.rotation = Quaternion.LookRotation(rotation);
         }
 
         // Changes the height position of the player..
