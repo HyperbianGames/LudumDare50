@@ -34,6 +34,9 @@ public class PlayerMovementAndCamera : MonoBehaviour
     private Vector3 playerFacingForward;
     private bool groundedPlayer;
     private Transform cameraMainTransform;
+    private Vector2 movement;
+    private Vector2 airMovement;
+    private Vector3 move;
 
     private void OnEnable()
     {
@@ -64,51 +67,27 @@ public class PlayerMovementAndCamera : MonoBehaviour
         CheckForCameraMovement();
 
         playerFacingForward = controller.transform.forward;
-
         groundedPlayer = controller.isGrounded;
+
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
         }
 
-        Vector2 movement = movementControl.action.ReadValue<Vector2>();
-        Vector3 move = new Vector3(movement.x, 0, movement.y);
-
-        // print($"output1: {move.x}, {move.z}, -- {controller.transform.forward.x}, {controller.transform.forward.z}");
-        // print($"{controller.transform.localRotation.ToString()} -- {controller.transform.rotation.ToString()}");
-
-        move.y = 0f;
-
-        // Movement
-        if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+        if (groundedPlayer)
         {
-            //move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
-            //controller.Move(move * Time.deltaTime * playerSpeed);
-
-            //print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
-            //move = controller.transform.forward * move.z + controller.transform.right * move.x;
-            //controller.Move(move * Time.deltaTime * playerSpeed);
+            movement = movementControl.action.ReadValue<Vector2>();
+            move = new Vector3(movement.x, 0, movement.y);
         }
         else
         {
-            //print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
-            //move = controller.transform.forward * move.z + controller.transform.right * move.x;
-            //controller.Move(move * Time.deltaTime * playerSpeed);
+             move = new Vector3(airMovement.x, 0, airMovement.y);
         }
 
-        print($"output1: {controller.transform.forward.ToString()}, {controller.transform.right.ToString() }, -- {controller.transform.rotation.ToString()}, {controller.transform.localRotation.ToString()}");
+        move.y = 0f;
         move = controller.transform.forward * move.z + controller.transform.right * move.x;
+
         controller.Move(move * Time.deltaTime * playerSpeed);
-
-        //// Facing
-        //if (move != Vector3.zero)
-        //{
-            
-        //    else
-        //    {
-
-        //    }
-        //}
 
         if (Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
         {
@@ -120,17 +99,11 @@ public class PlayerMovementAndCamera : MonoBehaviour
         if (jumpControl.action.triggered && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            airMovement = movement;
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-
-        //if(movement != Vector2.zero)
-        //{
-        //    float targetAngle = Mathf.Atan2(movement.x, movement.y) * Mathf.Rad2Deg + cameraMainTransform.eulerAngles.y;
-        //    Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0f);
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
-        //}
     }
 
     private void CheckForCameraMovement()
