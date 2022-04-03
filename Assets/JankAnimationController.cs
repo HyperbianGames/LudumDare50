@@ -46,6 +46,7 @@ public class JankAnimationController : MonoBehaviour
             if (animationData[abilityName][true].Count > 0)
             {
                 // there are rare animations, do RNG
+                // This may have been a bit of a yagni...
             }
             else
             {
