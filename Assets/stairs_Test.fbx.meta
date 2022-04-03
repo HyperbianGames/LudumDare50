@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6ada7798dac0c774b8f29b5405fb4f9d
+guid: a92415d27c64906478c585fbfd5402bf
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: stairs_texture
-    second: {fileID: 2100000, guid: fb4d11d43ea50c7498f1640ebdd1173b, type: 2}
+    second: {fileID: 2100000, guid: 4286393a4cdf8804a922679a2d6fd2f2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
