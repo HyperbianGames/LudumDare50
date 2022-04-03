@@ -19,7 +19,7 @@ public class PlayerMovementAndCamera : MonoBehaviour
     [SerializeField]
     private float playerSpeed = 2.0f;
     [SerializeField]
-    private float jumpHeight = 1.0f;
+    private float jumpHeight;
     [SerializeField]
     private float gravityValue;
     [SerializeField]
@@ -76,6 +76,12 @@ public class PlayerMovementAndCamera : MonoBehaviour
         if (groundedPlayer)
         {
             movement = movementControl.action.ReadValue<Vector2>();
+
+            if(Mathf.Approximately(leftClick.action.ReadValue<float>(), 1) && Mathf.Approximately(rightClick.action.ReadValue<float>(), 1))
+            {
+                movement.y = 1;
+            }
+
             move = new Vector3(movement.x, 0, movement.y);
         }
         else
