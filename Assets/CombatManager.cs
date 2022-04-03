@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 [Serializable]
@@ -45,22 +46,28 @@ public class CombatManager : MonoBehaviour
         foreach (GameObject spawnLoc in SpawnRegions["Dummies"].SpawnLocations)
         {
             GameObject newObj = Instantiate(DummyObjectPrefab);
+            newObj.GetComponent<NavMeshAgent>().enabled = false;
             newObj.transform.position = spawnLoc.transform.position;
             newObj.transform.rotation = spawnLoc.transform.rotation;
+            newObj.GetComponent<NavMeshAgent>().enabled = true;
         }
 
         foreach (GameObject spawnLoc in SpawnRegions["MediumEnemies"].SpawnLocations)
         {
             GameObject newObj = Instantiate(MediumEnemyObjectPrefab);
+            newObj.GetComponent<NavMeshAgent>().enabled = false;
             newObj.transform.position = spawnLoc.transform.position;
             newObj.transform.rotation = spawnLoc.transform.rotation;
+            newObj.GetComponent<NavMeshAgent>().enabled = true;
         }
 
         foreach (GameObject spawnLoc in SpawnRegions["BossSpawn"].SpawnLocations)
         {
             GameObject newObj = Instantiate(FinalBossObjectPrefab);
+            newObj.GetComponent<NavMeshAgent>().enabled = false;
             newObj.transform.position = spawnLoc.transform.position;
             newObj.transform.rotation = spawnLoc.transform.rotation;
+            newObj.GetComponent<NavMeshAgent>().enabled = true;
         }
     }
 

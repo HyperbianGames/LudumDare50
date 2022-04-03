@@ -115,7 +115,7 @@ public class JankAnimator : MonoBehaviour
         executeCallaback = false;
 
         OriginalLocation = ObjectToJanklyAnimate.transform.localPosition;
-        OriginalRotation = ObjectToJanklyAnimate.transform.rotation;
+        OriginalRotation = ObjectToJanklyAnimate.transform.localRotation;
         CurrentFrameLocation = OriginalLocation;
         CurrentFrameRotation = OriginalRotation;
         NextFrameLocation = KeyFrames[currentJankFrameIndex].nextLoc.transform.localPosition;

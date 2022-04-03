@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -30,16 +31,19 @@ public class PlayerController : MonoBehaviour
 
     public Creature Creature;
     public GameObject UIObject;
+    public GameObject TeleportObj;
 
     private int CurrentTargetIndex = 0;
 
     private Dictionary<InputAction, bool> previousState = new Dictionary<InputAction, bool>();
 
+    public static PlayerController Instance;
+
     // Start is called before the first frame update
     void Start()
     {
         Creature.IsPlayer = true;
-
+        Instance = this;
         actionOne = new InputAction("ActionOne", binding: CommonUsages.PrimaryAction);
         actionOne.AddBinding("<Keyboard>/1");
         actionOne.Enable();
@@ -86,7 +90,6 @@ public class PlayerController : MonoBehaviour
     InputAction actionFive;
     InputAction actionSix;
     InputAction actionSeven;
-    InputAction multifacitedOhShitButton;
 
     InputAction tabAction;
 
@@ -246,7 +249,25 @@ public class PlayerController : MonoBehaviour
 
     public void ActionSeven()
     {
-        print("ActionSeven");
+        ReadyPlayerForElavator();
+        //gameObject.transform.position = TeleportObj.transform.position;
+    }
+
+    public void ReadyPlayerForElavator()
+    {
+        gameObject.GetComponent<CharacterController>().enabled = false;
+        gameObject.GetComponent<Collider>().enabled = false;
+        gameObject.GetComponent<NavMeshAgent>().enabled = false;
+        gameObject.transform.position = TeleportObj.transform.position;
+        GameMenuController.Instance.ShowElevator(3);
+    }
+
+    public void ReleasePlayer()
+    {
+        gameObject.GetComponent<CharacterController>().enabled = true;
+        gameObject.GetComponent<Collider>().enabled = true;
+        gameObject.GetComponent<NavMeshAgent>().enabled = true;
+        gameObject.GetComponent<CharacterController>().enabled = true;
     }
 
     public void ActionTab()

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameMenuController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameMenuController : MonoBehaviour
     public GameObject Menu;
     public GameObject WinScreen;
     public GameObject LoseScreen;
+    public GameObject ElevatorSelect;
+    public GameObject WarningTextObj;
 
     private void Start()
     {
@@ -28,7 +31,7 @@ public class GameMenuController : MonoBehaviour
     public void Reset()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(2);
+       SceneManager.LoadScene(2);
     }
 
     public void GoToMenu()
@@ -52,5 +55,29 @@ public class GameMenuController : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(1);
+    }
+
+    public void ShowElevator(int numberOfTowersActive)
+    {
+        WarningTextObj.GetComponent<Text>().text = $"There are still {numberOfTowersActive} Pillars remaining. Defeat the enemies near the pillars to destroy them. Destroying Pillars will weaken Boss Name Here.\n\nAre you sure you want to go fight Boss Name Here ? ";
+
+        ElevatorSelect.SetActive(true);
+    }
+
+    public void HideElevator()
+    {
+        ElevatorSelect.SetActive(false);
+    }
+
+    public void ElavtorYesClick()
+    {
+        ElavatorController.Instance.StartRaise();
+        HideElevator();
+    }
+
+    public void ElavtorNoClick()
+    {
+        HideElevator();
+        PlayerController.Instance.ReleasePlayer();
     }
 }
