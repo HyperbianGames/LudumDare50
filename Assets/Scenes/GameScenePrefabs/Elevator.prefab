@@ -744,6 +744,7 @@ MonoBehaviour:
   PlayerCenterLoc: {fileID: 902788115655782760}
   CSollider: {fileID: 902788115949237273}
   ElevatorTarget: {fileID: 0}
+  ElevatorRiseLength: 10
 --- !u!1 &902788116892741174
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1536.5405, g: 1337.7686, b: 1578.25, a: 1}
+  m_IndirectSpecularColor: {r: 1535.1484, g: 1336.2666, b: 1575.9844, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5372,34 +5372,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 149734096, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 149734098, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -13.36
-      objectReference: {fileID: 0}
-    - target: {fileID: 149734098, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 35.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 149734098, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 83217213219177920, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
-      propertyPath: AnyKey
-      value: 
-      objectReference: {fileID: 130620154432942779, guid: 21f817a976fb6c44faa58e34fd78c2f4, type: 3}
     - target: {fileID: 83217213219177920, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
       propertyPath: Camera
       value: 
       objectReference: {fileID: 1190822507}
-    - target: {fileID: 83217213219177920, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
-      propertyPath: FinalBossObjectPrefab
-      value: 
-      objectReference: {fileID: 6018861746584287448, guid: b8fca6c92b1c39d48876f94af45f6147, type: 3}
     - target: {fileID: 83217213219177921, guid: f87b7c27f050b544ea338bd1c97ccf0f, type: 3}
       propertyPath: m_Name
       value: CombatManager
