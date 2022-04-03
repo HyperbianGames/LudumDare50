@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1497.8071, g: 1244.7861, b: 1250.7598, a: 1}
+  m_IndirectSpecularColor: {r: 1545.2783, g: 1345.2432, b: 1587.1055, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5941,6 +5941,14 @@ PrefabInstance:
       propertyPath: ActionThreeButton
       value: 
       objectReference: {fileID: 588568059}
+    - target: {fileID: 803180444588165197, guid: be08582ce90ec244a872bd934b4afb9b, type: 3}
+      propertyPath: jumpHeight
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 803180444588165197, guid: be08582ce90ec244a872bd934b4afb9b, type: 3}
+      propertyPath: gravityValue
+      value: -13.81
+      objectReference: {fileID: 0}
     - target: {fileID: 803180444588165197, guid: be08582ce90ec244a872bd934b4afb9b, type: 3}
       propertyPath: cmFreeLookCamera
       value: 
