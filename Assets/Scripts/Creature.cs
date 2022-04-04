@@ -16,6 +16,7 @@ public class Creature : MonoBehaviour
     public float CurrentGCD = 0;
 
     public EnemyActionSequencer EAS = null;
+    public GameObject playerModel;
 
     public Dictionary<string, Tuple<float, float>> Cooldowns { get; set; } = new Dictionary<string, Tuple<float, float>>();
     public bool IsPlayer = false;
@@ -92,11 +93,16 @@ public class Creature : MonoBehaviour
         {
             if (IsKillable)
             {
-                Destroy(gameObject);
+                
 
                 if (IsPlayer)
                 {
+                    Destroy(playerModel);
                     GameMenuController.Instance.ShowLoseScreen();
+                }
+                else
+                {
+                    Destroy(gameObject);
                 }
             }
             else
@@ -126,16 +132,6 @@ public class Creature : MonoBehaviour
         return aura.LastTick + aura.TickRate < Time.time;
     }
 
-    void OnMouseEnter()
-    {
-        print("Creature moused");
-    }
-
-    private void OnMouseExit()
-    {
-        print("Creature moused-");
-    }
-
     public void SetAsPlayerTarget(bool value)
     {
         if (!IsPlayer)
@@ -144,7 +140,11 @@ public class Creature : MonoBehaviour
 
     public int ApplyDamage(Creature sourceCreature, int damageAmount)
     {
-        CurrentTarget = sourceCreature;
+        if (damageAmount > 0 && !IsPlayer)
+        {
+            CurrentTarget = sourceCreature;
+        }
+        
         // This methos is mostly here in case we want to record this data or something
         CurrentHealth -= damageAmount;
         return damageAmount;

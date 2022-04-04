@@ -28,10 +28,10 @@ public class GameMenuController : MonoBehaviour
         Application.Quit();
     }
 
-    public void Reset()
+    public void ResetGame()
     {
         Time.timeScale = 1;
-       SceneManager.LoadScene(2);
+        SceneManager.LoadScene(2);
     }
 
     public void GoToMenu()
@@ -41,14 +41,14 @@ public class GameMenuController : MonoBehaviour
 
     public void ShowWinScreen()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0.1f;
         if (WinScreen != null)
             WinScreen.SetActive(true);
     }
 
     public void ShowLoseScreen()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0.1f;
         if (LoseScreen != null)
             LoseScreen.SetActive(true);
     }
