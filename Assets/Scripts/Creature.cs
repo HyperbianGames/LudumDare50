@@ -93,11 +93,16 @@ public class Creature : MonoBehaviour
         {
             if (IsKillable)
             {
-                Destroy(playerModel);
+                
 
                 if (IsPlayer)
                 {
+                    Destroy(playerModel);
                     GameMenuController.Instance.ShowLoseScreen();
+                }
+                else
+                {
+                    Destroy(gameObject);
                 }
             }
             else

@@ -17,6 +17,7 @@ public class EnemyActionSequencer : MonoBehaviour
     public Creature CreatureToControl;
     public string ActionListToUse;
     public EnemyActionData[] SpellList;
+    public GameObject Weapon;
 
     private void Start()
     {
@@ -32,8 +33,13 @@ public class EnemyActionSequencer : MonoBehaviour
             if (actionData != null)
             {
                 actionData.LastCastTime = Time.time;
-                
-                CreatureToControl.CastSpell(actionData.SpellCastFactory());
+
+                if (Weapon != null)
+                {
+                    Spell spell = actionData.SpellCastFactory();
+                    spell.CastEndCallback = () => { Weapon.GetComponent<JankAnimationController>().ExecuteAbilityAnimation("BossSwing"); };
+                    CreatureToControl.CastSpell(spell);
+                }
             }
         }
     }
