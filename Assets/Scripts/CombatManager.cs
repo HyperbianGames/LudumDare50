@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,6 +22,8 @@ public class CombatManager : MonoBehaviour
     public GameObject DummyObjectPrefab;
     public GameObject MediumEnemyObjectPrefab;
     public GameObject FinalBossObjectPrefab;
+
+    public bool BossIsBeingFought = false;
 
     private bool gameOver = false;
     private float GameOverTime = 0;
@@ -76,7 +77,6 @@ public class CombatManager : MonoBehaviour
         Creatures.Remove(creature);
         if (creature.IsBoss)
         {
-            Time.timeScale = 0;
             gameOver = true;
             GameOverTime = Time.realtimeSinceStartup;
             GameMenuController.Instance.ShowWinScreen();
@@ -101,23 +101,52 @@ public class CombatManager : MonoBehaviour
             
     }
 
+    private bool IsOnCooldown(Creature creature, string spellName)
+    {
+        return (creature.Cooldowns.ContainsKey(spellName) && creature.Cooldowns[spellName].Item1 > Time.time);
+    }
+
     internal void CastSpell(Creature creature, Spell spell)
     {
         Creatures.AddIfNotExist(creature);
 
-        if (creature.CurrentGCD <= 0)
-        {
-          
-            if (spell.ValidCast(creature))
-            {
-                if (spell.SpellType == SpellType.Instant)
-                    creature.CurrentGCD += GCDLength;
+        string spellName = spell.GetType().Name;
 
-                spell.CastStart(creature);
-                spell.CastStartCallback?.Invoke();
-                spell.CastSuccess(creature);
-                spell.CastEndCallback?.Invoke();
-            }
+        switch (spell.SpellType)
+        {
+            case SpellType.Instant:
+                if (creature.CurrentGCD <= 0 && !IsOnCooldown(creature, spellName))
+                {
+                    if (spell.ValidCast(creature))
+                    {
+                        if (!creature.Cooldowns.ContainsKey(spellName))
+                        {
+                            creature.Cooldowns.Add(spellName, new Tuple<float, float>(0f, 0f));
+                        }
+                        
+                        spell.CastStart(creature);
+                        spell.CastStartCallback?.Invoke();
+
+                        creature.Cooldowns[spellName] = new Tuple<float, float>(Time.time + spell.Cooldown, spell.Cooldown);
+                        creature.CurrentGCD += GCDLength;
+                        spell.CastSuccess(creature);
+                        spell.CastEndCallback?.Invoke();
+                    }
+                }
+                break;
+            case SpellType.CastTime:
+                if (creature.CurrentGCD <= 0)
+                {
+                    if (spell.ValidCast(creature))
+                    {
+                        spell.CastStart(creature);
+                        spell.CastStartCallback?.Invoke();
+                        creature.CurrentGCD += GCDLength;
+                        spell.CastSuccess(creature);
+                        spell.CastEndCallback?.Invoke();
+                    }
+                }
+                break;
         }
     }
 
