@@ -144,7 +144,11 @@ public class Creature : MonoBehaviour
 
     public int ApplyDamage(Creature sourceCreature, int damageAmount)
     {
-        CurrentTarget = sourceCreature;
+        if (damageAmount > 0 && !IsPlayer)
+        {
+            CurrentTarget = sourceCreature;
+        }
+        
         // This methos is mostly here in case we want to record this data or something
         CurrentHealth -= damageAmount;
         return damageAmount;
