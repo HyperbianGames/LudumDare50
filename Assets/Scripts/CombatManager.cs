@@ -37,6 +37,7 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         Instance = this;
         AnyKey.action.Enable();
         foreach (SpawnRegionData data in SpawnRegionData)

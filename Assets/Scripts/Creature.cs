@@ -16,6 +16,7 @@ public class Creature : MonoBehaviour
     public float CurrentGCD = 0;
 
     public EnemyActionSequencer EAS = null;
+    public GameObject playerModel;
 
     public Dictionary<string, Tuple<float, float>> Cooldowns { get; set; } = new Dictionary<string, Tuple<float, float>>();
     public bool IsPlayer = false;
@@ -92,7 +93,7 @@ public class Creature : MonoBehaviour
         {
             if (IsKillable)
             {
-                Destroy(gameObject);
+                Destroy(playerModel);
 
                 if (IsPlayer)
                 {
@@ -124,16 +125,6 @@ public class Creature : MonoBehaviour
     private bool AuraShouldTick(IAura aura)
     {
         return aura.LastTick + aura.TickRate < Time.time;
-    }
-
-    void OnMouseEnter()
-    {
-        print("Creature moused");
-    }
-
-    private void OnMouseExit()
-    {
-        print("Creature moused-");
     }
 
     public void SetAsPlayerTarget(bool value)

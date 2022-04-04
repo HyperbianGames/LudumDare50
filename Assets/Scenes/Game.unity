@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 734.4375, g: 747.43805, b: 910.34015, a: 1}
+  m_IndirectSpecularColor: {r: 730.7271, g: 742.3307, b: 898.89, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4079,7 +4079,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190822507}
-  m_LocalRotation: {x: 0.14220116, y: -0.0000000030900242, z: -4.4395823e-10, w: 0.98983777}
+  m_LocalRotation: {x: 0.14220116, y: 0.0000000030900242, z: 4.4395787e-10, w: 0.98983777}
   m_LocalPosition: {x: -17.88, y: 5.34, z: -48.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4676,6 +4676,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5710e8d784e5b14b8d4e1191e668116, type: 3}
+--- !u!1 &1339396487 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 568598739121406002, guid: be08582ce90ec244a872bd934b4afb9b, type: 3}
+  m_PrefabInstance: {fileID: 803180443528225013}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1374261536
 Mesh:
   m_ObjectHideFlags: 0
@@ -5496,7 +5501,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841303677}
-  m_LocalRotation: {x: 0.12422062, y: 0.000000017073113, z: -0.0000000021373876, w: 0.9922547}
+  m_LocalRotation: {x: 0.12422062, y: -0.00000001707311, z: 0.0000000021373872, w: 0.9922547}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6123,6 +6128,10 @@ PrefabInstance:
       propertyPath: HealthBar
       value: 
       objectReference: {fileID: 472637208}
+    - target: {fileID: 803180444588165198, guid: be08582ce90ec244a872bd934b4afb9b, type: 3}
+      propertyPath: playerModel
+      value: 
+      objectReference: {fileID: 1339396487}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be08582ce90ec244a872bd934b4afb9b, type: 3}
 --- !u!1001 &902788116469474854
@@ -6508,6 +6517,10 @@ PrefabInstance:
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 1094559922}
+    - target: {fileID: 8523695582735309684, guid: 86d075d6f2f4d0f488e90f29e46afc3f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetGame
+      objectReference: {fileID: 0}
     - target: {fileID: 8768696922571763670, guid: 86d075d6f2f4d0f488e90f29e46afc3f, type: 3}
       propertyPath: playerObject
       value: 
