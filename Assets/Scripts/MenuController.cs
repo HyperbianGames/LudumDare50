@@ -8,6 +8,11 @@ public class MenuController : MonoBehaviour
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+    }
+
     public void StartGameClick()
     {
         SceneManager.LoadSceneAsync(2);        

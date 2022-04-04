@@ -17,7 +17,7 @@ public class Creature : MonoBehaviour
 
     public EnemyActionSequencer EAS = null;
 
-    public Dictionary<Spell, float> Cooldowns { get; set; } = new Dictionary<Spell, float>();
+    public Dictionary<string, Tuple<float, float>> Cooldowns { get; set; } = new Dictionary<string, Tuple<float, float>>();
     public bool IsPlayer = false;
 
     public bool CanAct()
@@ -43,7 +43,15 @@ public class Creature : MonoBehaviour
     private void OnDestroy()
     {
         if (!IsPlayer)
+        {
+            if (!CombatManager.Instance.BossIsBeingFought)
+            {
+                PlayerController.Instance.Creature.CurrentHealth = PlayerController.Instance.Creature.MaxHealth;
+            }
+
             CombatManager.Instance.CreatureDestroyed(this);
+        }
+            
     }
 
     // Update is called once per frame
@@ -134,11 +142,12 @@ public class Creature : MonoBehaviour
             TargetingIndicator.GetComponent<Image>().enabled = value;
     }
 
-    public void ApplyDamage(Creature sourceCreature, int damageAmount)
+    public int ApplyDamage(Creature sourceCreature, int damageAmount)
     {
         CurrentTarget = sourceCreature;
         // This methos is mostly here in case we want to record this data or something
         CurrentHealth -= damageAmount;
+        return damageAmount;
     }
 
     public void OnBecameVisible()

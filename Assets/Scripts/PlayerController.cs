@@ -229,7 +229,9 @@ public class PlayerController : MonoBehaviour
 
     public void ActionThree()
     {
-        print("ActionThree");
+        Spell spell = new ActionThree();
+        spell.CastEndCallback = () => { Weapon.GetComponent<JankAnimationController>().ExecuteAbilityAnimation("ActionOne"); };
+        Creature.CastSpell(spell);
     }
 
     public void ActionFour()

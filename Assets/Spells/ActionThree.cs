@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public class MediumEnemySpellCast : Spell
+public class ActionThree : Spell
 {
-    public MediumEnemySpellCast()
+    public ActionThree()
     {
-        SpellType = SpellType.CastTime;
-        CastTime = 3.5f;
-        Cooldown = 1;
+        Cooldown = 5;
     }
-
+    
     public override void CastSuccess(Creature castingCreature)
     {
-        castingCreature.CurrentTarget.ApplyDamage(castingCreature, 25);
+        int damageDone = castingCreature.CurrentTarget.ApplyDamage(castingCreature, 30);
+        castingCreature.ApplyDamage(castingCreature, damageDone * -1);
     }
 
     public override void CastStart(Creature castingCreature)

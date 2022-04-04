@@ -6,9 +6,9 @@ public class GCDController : MonoBehaviour
 {
     public GameObject playerObject;
     public GameObject buttonParent;
-
-    Spell spell;
+    public string ActionName;
     Creature playerCreature;
+
     public void Start()
     {
         playerCreature = playerObject.GetComponent<Creature>();
@@ -18,6 +18,15 @@ public class GCDController : MonoBehaviour
     void Update()
     {
         float value = playerCreature.CurrentGCD / CombatManager.GCDLength;
+        if (playerCreature.Cooldowns.ContainsKey(ActionName))
+        {
+            float timeLeft = playerCreature.Cooldowns[ActionName].Item1 - Time.time;
+            if (timeLeft > playerCreature.CurrentGCD)
+            {
+                value = timeLeft / playerCreature.Cooldowns[ActionName].Item2;
+            }
+        }
+        
         gameObject.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 60 - (value * 60), value * 60);
     }
 }
