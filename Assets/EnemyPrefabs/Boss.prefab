@@ -4136,6 +4136,7 @@ GameObject:
   - component: {fileID: 6018861746584287455}
   - component: {fileID: 8267499655783758996}
   - component: {fileID: 2067869769155263866}
+  - component: {fileID: 6096934381015404061}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Enemy
@@ -4294,6 +4295,21 @@ MonoBehaviour:
   CreatureToControl: {fileID: 6018861746584287455}
   ActionListToUse: Boss
   Weapon: {fileID: 9000793955639443115}
+--- !u!114 &6096934381015404061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6018861746584287448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0060f39bdc39d4286c34a46b15b467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttachmentPoints:
+  - AttacmnetType: 2
+    GO: {fileID: 9000793955639443115}
 --- !u!1 &6018861747904760862
 GameObject:
   m_ObjectHideFlags: 0

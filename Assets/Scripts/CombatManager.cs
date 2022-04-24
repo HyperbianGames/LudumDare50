@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using Hyperbius.Mortar;
+using Hyperbius.Mortar.Core;
 
 [Serializable]
 public class SpawnRegionData
@@ -13,6 +15,8 @@ public class SpawnRegionData
 
 public class CombatManager : MonoBehaviour
 {
+    public IServer server = new ENetServer();
+    
     public static CombatManager Instance { get; set; }
     public const float GCDLength = 1.5f;
     public List<Creature> Creatures { get; set; } = new List<Creature>();
@@ -150,6 +154,10 @@ public class CombatManager : MonoBehaviour
                 break;
         }
     }
+
+    public abstract class SpellEffect
+    { }
+
 
     internal static void SetVisibleCreature(Creature creature, bool v)
     {
